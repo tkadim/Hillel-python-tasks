@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Контакти{% endblock %}
+
+{% block content %}
+<h1>Сторінка контактів</h1>
+<p>Тел.: +366563463456 </p>
+<p>Email: box@gmail.com </p>
+    <form method="POST" action="/submit">
+        <label>Повідомлення:</label><br>
+        <textarea name="message" required></textarea><br><br>
+
+        <button type="submit">Відправити</button>
+    </form>
+
+{% if msg %}
+<p style="color: red">Ви відправили повідомлення: "{{ msg }}"</p>
+{% endif %}
+
+{% endblock %}
