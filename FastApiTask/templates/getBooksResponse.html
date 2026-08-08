@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+    <p>Here is a list of books in the library:</p>
+    <ul>
+        {% for book in context_data %}
+        <li>
+            <p>Title: {{book.title}}</p>
+            <p>Genre: {{book.genre}}</p>
+            <p>Author: {{book.author}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

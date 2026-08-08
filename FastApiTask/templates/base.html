@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}FastAPI - Бібліотека{% endblock %}</title>
+
+</head>
+<body>
+    <header>
+        <h1>Мій FastAPI-проєкт</h1>
+        <nav>
+            <a href="/">Головна</a> |
+            <a href="/books/">Каталог книг</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Тут дочірні шаблони підставляють свій контент -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2026 Мій сайт</p>
+    </footer>
+</body>
+</html>
