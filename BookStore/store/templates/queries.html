@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>Fantasy books with price > 300 UAH:<br><code>books.filter(Q(price__gt=300) & Q(category=fantasy_cat))</code></p>
+    <p>Total Stock Number: {{ total_stock }}<br><code>filtered_books.aggregate(number=Sum('stock'))</code></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in queries %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.description }}</td>
+                <td>{{ book.price }}</td>
+                <td>{{ book.stock }}</td>
+                <td>{{ book.category }}</td>
+                <td><button>Buy</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
