@@ -16,12 +16,13 @@ class Category(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField()
-    author = models.CharField()
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(blank=True)
     stock = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="books")
+    image = models.ImageField(upload_to='books/', blank=True, null=True)
 
     def __str__(self):
         return self.title
