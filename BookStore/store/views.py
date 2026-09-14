@@ -2,7 +2,7 @@ from os import name
 from unicodedata import category
 
 from django.contrib.auth.middleware import LoginRequiredMiddleware
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.management import templates
 from django.db.models import Q, Count, Sum, F
 from django.shortcuts import render, get_object_or_404
@@ -11,7 +11,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .models import Book, Category
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 class BooksListView(ListView):
     model = Book
@@ -93,26 +96,48 @@ class BookDetailView(DetailView):
     pk_url_kwarg = 'book_id'
 
 
-class BookCreateView(LoginRequiredMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Book
     template_name = 'store/book_form.html'
     fields = ['title', 'author', 'description', 'price', 'image']
     success_url = reverse_lazy('store:index')
 
+    permission_required = "store.add_book"
 
-class BookUpdateView(LoginRequiredMixin, UpdateView):
+    raise_exception = True
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.info(f"New book was created: {form.instance.title} (id={form.instance.id})")
+        return response
+
+
+class BookUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Book
     template_name = 'store/book_form.html'
     fields = ['title', 'author', 'description', 'price', 'image']
     pk_url_kwarg = 'book_id'
     success_url = reverse_lazy('store:index')
 
+    permission_required = "store.change_book"
 
-class BookDeleteView(LoginRequiredMixin, DeleteView):
+    raise_exception = True
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.info(f"The book was edited: {form.instance.title} (id={form.instance.id})")
+        return response
+
+
+class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Book
     template_name = 'store/book_confirm_delete.html'
     pk_url_kwarg = 'book_id'
     success_url = reverse_lazy('store:index')
+
+    permission_required = "store.delete_book"
+
+    raise_exception = True
 
 
 def index(request):

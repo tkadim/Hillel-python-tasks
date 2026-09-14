@@ -18,14 +18,41 @@
             <li class="nav-item">
               <a href={% url "store:index" %} class="navbar-brand">Books Store</a>
             </li>
-            {% if user.is_authenticated %}
+
+            {% if perms.store.add_book %}
+
             <li class="nav-item">
-              <a href={% url "store:book_create" %} class="navbar-brand">Add Book</a>
+                <a href={% url "store:book_create" %} class="navbar-brand">Add Book</a>
             </li>
+
             {% endif %}
 
           </ul>
+
+
+
         </div>
+
+        <div class="collapse navbar-collapse justify-content-end" >
+              {% if user.is_authenticated %}
+
+                <span>Hello, {{ user.username }}!</span>
+                <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+
+              {% else %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'accounts:register' %}">Register</a>
+                    </li>
+                </ul>
+              {% endif %}
+          </div>
       </div>
     </nav>
 

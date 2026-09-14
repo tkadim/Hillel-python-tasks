@@ -13,8 +13,12 @@
         <p><strong>Description:</strong> {{ book.description }}</p>
         <p><strong>Price:</strong> {{ book.price }}</p>
         <button class="btn btn-primary">Buy</button>
-        {% if user.is_authenticated %}
+
+        {% if perms.store.change_book %}
         <a href={% url "store:book_update" book.id %} class="btn">Update Book</a>
+        {% endif %}
+
+        {% if perms.store.delete_book %}
         <a href={% url "store:book_delete" book.id %} class="btn">Delete Book</a>
         {% endif %}
 

@@ -52,6 +52,8 @@
               </div>
               <div class="card-footer"><a href={% url "store:book_detail" book.id %} class="btn btn-primary">Get details</a></div>
             </div>
+        {% empty %}
+            <p>Sorry, no books found</p>>
         {% endfor %}
 
     </div>

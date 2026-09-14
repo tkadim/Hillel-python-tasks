@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.conf.global_settings import LOGGING
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,17 +39,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store.apps.StoreConfig'
+
+    'store.apps.StoreConfig',
+    'debug_toolbar',
+    'accounts'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "store.middleware.RequestLoggingMiddleware"
+]
+
+INTERNAL_IPS = [
+"127.0.0.1",# дозволяє показувати панель локально
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -100,6 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
@@ -132,3 +147,61 @@ MEDIA_URL = '/media/'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "store:index"
+LOGOUT_REDIRECT_URL = "store:index"
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    "formatters": {
+            "verbose": {
+                "format": "[{asctime}] {levelname} {name} - {message}",
+                "style": "{",
+            },
+            "simple": {
+                "format": "{levelname} {message}",
+                "style": "{",
+            },
+    },
+
+    "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "simple",
+            },
+
+    },
+
+    "loggers": {
+
+            "django": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+            },
+
+            "django.db.backends": {
+                "handlers": ["console"],
+                "level": "WARNING",
+                "propagate": False,
+            },
+
+            "store": {
+                "handlers": ["console"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+
+            "accounts": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+        },
+
+}
