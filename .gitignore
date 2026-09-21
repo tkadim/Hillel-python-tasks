@@ -1,1 +1,5 @@
 .idea/
+BookStore/.env
+BookStore/media/
+BookStore/db.sqlite3
+BookStore/db.sqlite3.backup

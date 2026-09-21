@@ -22,7 +22,7 @@ class Book(models.Model):
     description = models.TextField(blank=True)
     stock = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="books")
-    image = models.ImageField(upload_to='books/', blank=True, null=True)
+    image = models.ImageField(upload_to='books/', blank=True, null=True, default="books/blank.jpg")
 
     def __str__(self):
         return self.title
