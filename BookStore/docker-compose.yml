@@ -40,9 +40,9 @@ services:
       - media_data:/app/media
       - static_data:/app/static
 
-    command: >
-      sh -c "python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000"
+#    command: >
+#      sh -c "python manage.py migrate &&
+#      python manage.py runserver 0.0.0.0:8000"
 
     depends_on:
       db:
