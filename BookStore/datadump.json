@@ -1,0 +1,211 @@
+[
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Editors",
+    "permissions": [
+      [
+        "add_book",
+        "store",
+        "book"
+      ]
+    ]
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "moofx9xvg35kaa2x0q6v096ng8qgnc4u",
+  "fields": {
+    "session_data": ".eJxVjM0OwiAQhN-FsyHdBRbq0bvPQPhZpWogKe3J-O62SQ96mmS-b-YtfFiX4tfOs5-yOAsQp98uhvTkuoP8CPXeZGp1macod0UetMtry_y6HO7fQQm9bGseb8ZR1ARoYVC85agMYbA8EDjSeUCb2DmICq1zSKggGQ3J5oicxOcLobI2VA:1x8fiI:nQmQvJ-YqCcB43ozPil3T3eAP2UpyzosNVZoR82tqPI",
+    "expire_date": "2026-10-05T15:13:50.410Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v54r85wwto975wtlvx6fn1992n0otwbr",
+  "fields": {
+    "session_data": ".eJxVjM0OwiAQhN-FsyHdBRbq0bvPQPhZpWogKe3J-O62SQ96mmS-b-YtfFiX4tfOs5-yOAsQp98uhvTkuoP8CPXeZGp1macod0UetMtry_y6HO7fQQm9bGseb8ZR1ARoYVC85agMYbA8EDjSeUCb2DmICq1zSKggGQ3J5oicxOcLobI2VA:1x68Av:Di_Pl7KmznT4HTT30s5O0fX2hdryW_M_vdxQ07q590I",
+    "expire_date": "2026-09-28T15:00:53.981Z"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 1,
+  "fields": {
+    "name": "Fiction",
+    "slug": "fiction"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 2,
+  "fields": {
+    "name": "Fantasy",
+    "slug": "fantasy"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 3,
+  "fields": {
+    "name": "Science Fiction",
+    "slug": "science-fiction"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 4,
+  "fields": {
+    "name": "Crime",
+    "slug": "crime"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 0,
+  "fields": {
+    "title": "test",
+    "author": "me",
+    "price": "123.00",
+    "description": "description",
+    "stock": 0,
+    "category": null,
+    "image": ""
+  }
+},
+{
+  "model": "store.book",
+  "pk": 1,
+  "fields": {
+    "title": "A Story of Yesterday",
+    "author": "Sergio Cobo",
+    "price": "100.00",
+    "description": "A Story of Yesterday is a concise and straight punch to the jaw of life.\r\nUnder a sky of different colors germinates a magical story of survival, where the result of each choice, enclosed in this particular tale, will snatch the whereabouts of each story forever.",
+    "stock": 3,
+    "category": 1,
+    "image": "books/a_story_of_yesterday_2DbA7uE.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 2,
+  "fields": {
+    "title": "A Game of Thrones",
+    "author": "George R.R. Martin",
+    "price": "199.00",
+    "description": "Long ago, in a time forgotten, a preternatural event threw the seasons out of balance. In a land where summers can last decades and winters a lifetime, trouble is brewing.",
+    "stock": 5,
+    "category": 2,
+    "image": "books/a_game_of_thrones_glIaQ2f.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 3,
+  "fields": {
+    "title": "The Life of Insects",
+    "author": "Victor Pelevin",
+    "price": "259.00",
+    "description": "Set in a crumbling Soviet Black Sea resort, The Life of Insects with its motley cast of characters who exist simultaneously as human beings (racketeers, mystics, drug addicts and prostitutes) and as insects, extended the surreal comic range for which Pelevin's first novel Omon Ra was acclaimed by critics.",
+    "stock": 2,
+    "category": 1,
+    "image": "books/life_of_insects_L20LxiE.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 4,
+  "fields": {
+    "title": "Ring Around the Sun",
+    "author": "Clifford D. Simak",
+    "price": "99.00",
+    "description": "When inventors come up with cars, light bulbs, razor blades, and other items that never wear out or break down, the world's biggest industries begin to be squeezed out, and the planet is headed for economic collapse, when people suddenly begin to disappear without a trace",
+    "stock": 1,
+    "category": 3,
+    "image": "books/ring_around_the_sun_WDQveyb.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 5,
+  "fields": {
+    "title": "The Big Man Upstairs",
+    "author": "J.D. Kirk",
+    "price": "123.00",
+    "description": "Burdened by guilt over the trauma recently inflicted on his friends and colleagues, former-Detective Chief Inspector Jack Logan has spent the past nine months living in self-imposed exile.",
+    "stock": 4,
+    "category": 4,
+    "image": "books/the_big_man_upstairs_AT1XO0r.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 6,
+  "fields": {
+    "title": "The Magus",
+    "author": "John Fowles",
+    "price": "319.00",
+    "description": "This daring literary thriller, rich with eroticism and suspense, is one of John Fowles's best-loved and bestselling novels and has contributed significantly to his international reputation as a writer of the first degree. At the center of The Magus is Nicholas Urfe, a young Englishman who accepts a teaching position on a remote Greek island, where he befriends a local millionaire. The friendship soon evolves into a deadly game, in which reality and fantasy are deliberately manipulated, and Nicholas finds that he must fight not only for his sanity but for his very survival.",
+    "stock": 6,
+    "category": 1,
+    "image": "books/the_magus_THgPPRK.jpeg"
+  }
+},
+{
+  "model": "store.book",
+  "pk": 8,
+  "fields": {
+    "title": "test",
+    "author": "me",
+    "price": "34.00",
+    "description": "descr",
+    "stock": 0,
+    "category": null,
+    "image": "books/blank.jpg"
+  }
+},
+{
+  "model": "accounts.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$obmSUDne5KSc6Pxy9voENP$yCtFYOdyJK/f8TB9QyhR2qhPeaKdwBnYcQK1nyb6j5k=",
+    "last_login": "2026-09-21T15:13:50.407Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "tkadim@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-14T10:00:21.773Z",
+    "phone_number": "",
+    "birth_date": null,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$caLML3u7Axm71Wgkb58XkB$IOqV45jxF/kydtNCgEI0upUjY54iKJtMlm+gxhZaOk8=",
+    "last_login": "2026-09-14T14:50:14.931Z",
+    "is_superuser": false,
+    "username": "maestro",
+    "first_name": "",
+    "last_name": "",
+    "email": "maestro@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-09-14T14:41:16.575Z",
+    "phone_number": "7777777777",
+    "birth_date": null,
+    "avatar": "",
+    "groups": [
+      [
+        "Editors"
+      ]
+    ],
+    "user_permissions": []
+  }
+}
+]
