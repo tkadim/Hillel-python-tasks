@@ -36,10 +36,13 @@
         <div class="collapse navbar-collapse justify-content-end" >
               {% if user.is_authenticated %}
 
-                <span>Hello, {{ user.username }}!</span>
+                <span style="display:block; margin-right: 20px">Hello, {{ user.username }}!</span>
+                {% if user.is_staff %}
+                <a class="navbar-brand" href="{% url 'admin:index' %}">Admin</a>
+                {% endif %}
                 <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit">Logout</button>
+                    <button class="btn btn-secondary btn-lg" type="submit">Logout</button>
                 </form>
 
               {% else %}
