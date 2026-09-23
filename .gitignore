@@ -1,4 +1,5 @@
 .idea/
+temp/
 BookStore/.env
 BookStore/media/
 BookStore/db.sqlite3
