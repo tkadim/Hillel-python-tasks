@@ -24,5 +24,12 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="books")
     image = models.ImageField(upload_to='books/', blank=True, null=True, default="books/blank.jpg")
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'author'], name='unique_title_author'
+            )
+        ]
+
     def __str__(self):
         return self.title
