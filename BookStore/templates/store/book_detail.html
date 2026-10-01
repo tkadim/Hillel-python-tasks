@@ -12,7 +12,12 @@
 
         <p><strong>Description:</strong> {{ book.description }}</p>
         <p><strong>Price:</strong> {{ book.price }}</p>
-        <button class="btn btn-primary">Buy</button>
+
+        {% include "store/book_stock_block.html" %}
+
+        {% if book.stock > 0 %}
+        <a href={% url "cart:add_to_cart" book.id %} class="btn btn-primary">Add To Cart</a>
+        {% endif %}
 
         {% if perms.store.change_book %}
         <a href={% url "store:book_update" book.id %} class="btn">Update Book</a>

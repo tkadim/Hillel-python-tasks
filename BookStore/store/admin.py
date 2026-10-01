@@ -21,7 +21,8 @@ class BookAdmin(admin.ModelAdmin):
         'title',
         'author',
         'price',
-        'image_preview'
+        'image_preview',
+        'stock'
     )
     list_filter = ['author', 'stock', 'category']
     search_fields = ['title', 'description']
@@ -33,7 +34,7 @@ class BookAdmin(admin.ModelAdmin):
 
         return "Немає зображення"
 
-    image_preview.short_description = "Прев'ю"
+    image_preview.short_description = "Book Cover"
 
 
 # admin.site.register(Category, CategoryAdmin)

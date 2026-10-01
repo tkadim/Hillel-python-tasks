@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Cart</h1>
+
+    {% if items %}
+        <table>
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Sum</th>
+                <th></th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.book.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.subtotal }} UAH</td>
+                    <td>
+                        <a href="{% url 'cart:remove_from_cart' item.book.id %}">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p><strong>Total:</strong> {{ total_items }} books for {{ total_price }} UAH</p>
+        <a href="{% url 'cart:clear_cart' %}">Empty Cart</a>
+    {% else %}
+        <p>The cart is empty.</p>
+    {% endif %}
+{% endblock %}

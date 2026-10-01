@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Order #{{ order.id }}</h1>
+    <p>Status: {{ order.get_status_display }}</p>
+ 
+    <table>
+        <tr>
+            <th>Book</th>
+            <th>Quantity</th>
+            <th>Price at the time of purchase</th>
+            <th>Sum</th>
+        </tr>
+        {% for item in order.items.all %}
+            <tr>
+                <td>{{ item.book_title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price_at_purchase }} UAH</td>
+                <td>{{ item.subtotal }} UAH</td>
+            </tr>
+        {% endfor %}
+    </table>
+ 
+    <p><strong>Total:</strong> {{ order.total_price }} UAH</p>
+{% endblock %}

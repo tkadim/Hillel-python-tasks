@@ -1,0 +1,5 @@
+{% if book.stock > 0 %}
+<span class="badge text-bg-success float-end">In Stock: {{ book.stock }}</span>
+{% else %}
+<span class="badge text-bg-danger float-end">Out Of Stock</span>
+{% endif %}
