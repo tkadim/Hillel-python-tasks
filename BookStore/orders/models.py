@@ -27,12 +27,11 @@ class Order(models.Model):
     )
 
     shipping_address = models.CharField(max_length=255, blank=True)
-
     phone_number = models.CharField(max_length=20, blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-
     updated_at = models.DateTimeField(auto_now=True)
+    stripe_checkout_session_id = models.CharField(max_length=255, blank=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-created_at']

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Thank You for the order!</h1>
+    <p>Order #{{ order.id }} has been successfully placed.</p>
+    <p>The payment status will be updated within a few seconds after confirmation from Stripe.</p>
+    <a href="{% url 'orders:order_detail' order.id %}">View order</a>
+{% endblock %}

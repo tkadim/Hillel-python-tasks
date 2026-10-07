@@ -5,7 +5,7 @@ from django.db.models import F
 from cart.cart import get_cart
 from orders.models import Order, OrderItem
 from store.models import Book
-
+from django.core.mail import send_mail
 
 @transaction.atomic
 def create_order_from_cart(request, shipping_address='', phone_number=''):
@@ -44,3 +44,24 @@ def create_order_from_cart(request, shipping_address='', phone_number=''):
 
     cart.clear()
     return order
+
+
+def validate_payment(order, event):
+    if event["amount_total"] != order.total_price * 100:
+        raise ValueError("Invalid payment amount")
+
+    if event["payment_status"] != "paid":
+        raise ValueError("Payment not completed")
+
+
+def send_order_email(order):
+    subject = "Your order has been accepted."
+
+    message = f"Thank you for your order #{order.id}"
+
+    send_mail(
+        subject,
+        message,
+        "shop@bookstore.com",
+        [order.customer.email],
+    )

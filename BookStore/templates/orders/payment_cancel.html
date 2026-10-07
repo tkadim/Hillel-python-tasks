@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Payment cancelled</h1>
+    <p>You can try paying again.</p>
+    <a href="{% url 'orders:create_checkout_session' order.id %}">Try one more time</a>
+{% endblock %}

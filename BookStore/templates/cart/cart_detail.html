@@ -2,6 +2,12 @@
 {% block content %}
     <h1>Cart</h1>
 
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     {% if items %}
         <table>
             <tr>
@@ -11,9 +17,26 @@
                 <th></th>
             </tr>
             {% for item in items %}
-                <tr>
+                <tr {% if item.exceeds_stock %}class="stock-warning"{% endif %}>
                     <td>{{ item.book.title }}</td>
-                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <form method="post" action="{% url 'cart:update_cart_item' item.book.id %}">
+                            {% csrf_token %}
+                            <input
+                                type="number"
+                                name="quantity"
+                                value="{{ item.quantity }}"
+                                min="1"
+                                max="{{ item.book.stock }}"
+                            >
+                            <button type="submit">Update</button>
+                        </form>
+                        {% if item.exceeds_stock %}
+                            <p class="warning">
+                                Only {{ item.book.stock }} pcs available! Decrease number.
+                            </p>
+                        {% endif %}
+                    </td>
                     <td>{{ item.subtotal }} UAH</td>
                     <td>
                         <a href="{% url 'cart:remove_from_cart' item.book.id %}">Remove</a>
@@ -24,6 +47,9 @@
 
         <p><strong>Total:</strong> {{ total_items }} books for {{ total_price }} UAH</p>
         <a href="{% url 'cart:clear_cart' %}">Empty Cart</a>
+        {% if items|length > 0 %}
+            <a href="{% url 'orders:checkout' %}" class="btn-checkout">Checkout</a>
+        {% endif %}
     {% else %}
         <p>The cart is empty.</p>
     {% endif %}

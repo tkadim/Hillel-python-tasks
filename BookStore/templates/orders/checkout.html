@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Placing an order</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if items %}
+
+        <h2>Your Order</h2>
+        <table class="checkout-summary">
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Sum</th>
+            </tr>
+            {% for item in items %}
+                <tr {% if item.exceeds_stock %}class="stock-warning"{% endif %}>
+                    <td>{{ item.book.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.book.price }} UAH</td>
+                    <td>{{ item.subtotal }} UAH</td>
+                </tr>
+                {% if item.exceeds_stock %}
+                    <tr>
+                        <td colspan="4" class="warning">
+                            Only {{ item.book.stock }} pcs. of "{{ item.book.title }} in stock".
+                            <a href="{% url 'cart:cart_detail' %}">Return to the cart</a>, to change quantity.
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <p class="checkout-total">
+            <strong>Total due: {{ total_price }} UAH</strong> ({{ total_items }} book(s))
+        </p>
+
+        {# ==================== DELIVERY DETAILS FORM ==================== #}
+        <h2>Delivery details</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="shipping_address">Delivery Address</label>
+                <textarea
+                    id="shipping_address"
+                    name="shipping_address"
+                    rows="3"
+                    required
+                    placeholder="City, street, building, apartment, post office branch, etc."
+                >{{ request.POST.shipping_address }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="phone_number">Phone number</label>
+                <input
+                    type="tel"
+                    id="phone_number"
+                    name="phone_number"
+                    required
+                    placeholder="+380XXXXXXXXX"
+                    value="{{ request.POST.phone_number }}"
+                >
+            </div>
+
+            {# disabled, if at least one item exceeds the stock balance - #}
+            {# prevents placing an order that would fail with a ValidationError anyway #}
+            <button
+                type="submit"
+                {% for item in items %}{% if item.exceeds_stock %}disabled{% endif %}{% endfor %}
+            >
+                Confirm order
+            </button>
+        </form>
+
+    {% else %}
+        <p>Your cart is empty.</p>
+        <a href="{% url 'store:index' %}">Go to the book catalog</a>
+    {% endif %}
+{% endblock %}

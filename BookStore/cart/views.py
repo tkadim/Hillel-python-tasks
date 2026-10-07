@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from store.models import Book
 from .cart import get_cart
@@ -6,8 +8,28 @@ from .cart import get_cart
 def add_to_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     cart = get_cart(request)
-    cart.add(book)
+
+    try:
+        cart.add(book)
+        messages.success(request, f"«{book.title}» was added to the cart.")
+    except ValidationError as e:
+        messages.error(request, str(e))
+
     return redirect('cart:cart_detail')
+
+
+def update_cart_item(request, book_id):
+    """Change quantity directly on the cart page"""
+    book = get_object_or_404(Book, id=book_id)
+    cart = get_cart(request)
+
+    try:
+        quantity = int(request.POST.get("quantity", 1))
+        cart.update_quantity(book, quantity)
+    except ValidationError as e:
+        messages.error(request, str(e))
+
+    return redirect("cart:cart_detail")
 
 def remove_from_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)

@@ -1,4 +1,7 @@
 from decimal import Decimal
+
+from django.core.exceptions import ValidationError
+
 from .models import Cart as CartModel, CartItem
 from store.models import Book
 
@@ -14,10 +17,28 @@ class SessionCart:
 
     def add(self, book, quantity=1):
         book_id = str(book.id)
-        if book_id in self.cart:
-            self.cart[book_id] += quantity
-        else:
-            self.cart[book_id] = quantity
+        current_quantity = self.cart.get(book_id, 0)
+        new_quantity = current_quantity + quantity
+
+        if new_quantity > book.stock:
+            raise ValidationError(
+                f"Out of stock of '{book.title}'"
+                f"(In stock: {book.stock} pcs, In the cart: {current_quantity} pcs)"
+            )
+
+        self.cart[book_id] = new_quantity
+        self._save()
+
+    def update_quantity(self, book, quantity):
+        """Set particular number of books"""
+        if quantity > book.stock:
+            raise ValidationError(f"There are only {book.stock} pcs of '{book.title}' in stock")
+
+        if quantity <= 0:
+            self.remove(book)
+            return
+
+        self.cart[str(book.id)] = quantity
         self._save()
 
     def remove(self, book):
@@ -44,6 +65,7 @@ class SessionCart:
                 'book': book,
                 'quantity': quantity,
                 'subtotal': book.price * quantity,
+                "exceeds_stock": quantity > book.stock,
             })
         return items
 
@@ -64,9 +86,28 @@ class DatabaseCart:
         item, created = CartItem.objects.get_or_create(
             cart=self.cart_obj, book=book, defaults={"quantity": quantity}
         )
+        new_quantity = quantity if created else item.quantity + quantity
+
+        if new_quantity > book.stock:
+            raise ValidationError(
+
+                f"Not enough '{book.title}' in stock "
+                f"(In stock: {book.stock} pcs)"
+            )
+
         if not created:
-            item.quantity += quantity
+            item.quantity = new_quantity
             item.save()
+
+    def update_quantity(self, book, quantity):
+        if quantity > book.stock:
+            raise ValidationError(f"Only {book.stock} pcs. of the book '{book.title}' in stock")
+
+        if quantity <= 0:
+            self.remove(book)
+            return
+
+        CartItem.objects.filter(cart=self.cart_obj, book=book).update(quantity=quantity)
 
     def remove(self, book):
         CartItem.objects.filter(cart=self.cart_obj, book=book).delete()
@@ -75,10 +116,15 @@ class DatabaseCart:
         self.cart_obj.items.all().delete()
 
     def get_items(self):
-        return [
-            {'book': item.book, 'quantity': item.quantity, 'subtotal': item.subtotal}
-            for item in self.cart_obj.items.select_related('book').all()
-        ]
+        items = []
+        for item in self.cart_obj.items.select_related("book").all():
+            items.append({
+                "book": item.book,
+                "quantity": item.quantity,
+                "subtotal": item.subtotal,
+                "exceeds_stock": item.quantity > item.book.stock,
+            })
+        return items
 
     @property
     def total_price(self):

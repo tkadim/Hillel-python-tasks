@@ -21,4 +21,12 @@
     </table>
  
     <p><strong>Total:</strong> {{ order.total_price }} UAH</p>
+
+    {% if order.status == "pending" %}
+    <a href="{% url 'orders:create_checkout_session' order.id %}" class="btn-pay">
+        Pay {{ order.total_price }} UAH
+    </a>
+    {% elif order.status == "paid" %}
+    <p class="status-paid">✓ Paid</p>
+    {% endif %}
 {% endblock %}
