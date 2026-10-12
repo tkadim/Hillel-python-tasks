@@ -5,11 +5,12 @@ from django.db import transaction
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from base import settings
 from cart.cart import get_cart
 from .models import Order
-from .services import create_order_from_cart, validate_payment
+from .services import create_order_from_cart, validate_payment, send_order_email
 import logging
 
 logger = logging.getLogger(__name__)
@@ -117,6 +118,7 @@ def payment_cancel(request, order_id):
     return render(request, "orders/payment_cancel.html", {"order": order})
 
 
+@csrf_exempt
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
@@ -130,10 +132,10 @@ def stripe_webhook(request):
     except stripe.error.SignatureVerificationError:
         return HttpResponseBadRequest("Invalid signature")
 
-    if event.type == "checkout.session.completed":
+    if event['type'] == "checkout.session.completed":
 
-        session = event.data.object
-        order_id = session.metadata['order_id']
+        session = event['data']['object']
+        order_id = session.get('metadata', {}).get('order_id')
 
         if order_id:
             with transaction.atomic():
@@ -142,6 +144,8 @@ def stripe_webhook(request):
                 order.status = Order.Status.PAID
                 order.stripe_payment_intent_id = session.get("payment_intent", "")
                 order.save(update_fields=["status", "stripe_payment_intent_id"])
-                #send email
+
+                if order.user.email:
+                    send_order_email(order)
 
     return HttpResponse(status=200)
